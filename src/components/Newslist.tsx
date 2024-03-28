@@ -1,19 +1,24 @@
+import { Artikel } from "@/types/artikel.type";
 import Cardnews from "./Cardnews";
 
-const Newslist = ({ artikels }: any) => {
+interface TypeProps {
+  artikels: Artikel[];
+}
+
+const Newslist = ({ artikels }: TypeProps) => {
   // console.log(artikels);
-  const handleSaveNews = (artikel: any) => {
+  const handleSaveNews = (artikel: Artikel) => {
     // console.log(artikel);
-    const savedNews = JSON.parse(localStorage.getItem("savedNews") || "[]");
+    const savedNews: Artikel[] = JSON.parse(
+      localStorage.getItem("savedNews") || "[]"
+    );
     savedNews.push({
-      imageUrl: artikel.urlToImage,
-      title: artikel.title,
-      url: artikel.url,
+      ...artikel,
     });
     localStorage.setItem("savedNews", JSON.stringify(savedNews));
   };
 
-  const artikelGroups = [];
+  const artikelGroups: Artikel[][] = [];
   for (let i = 0; i < artikels.length; i += 5) {
     artikelGroups.push(artikels.slice(i, i + 5));
   }
@@ -22,7 +27,7 @@ const Newslist = ({ artikels }: any) => {
     <>
       {artikels.length > 0 ? (
         <>
-          {artikelGroups.map((group: any, groupIndex: number) => {
+          {artikelGroups.map((group: Artikel[], groupIndex: number) => {
             const isCrossedRow = groupIndex % 2 !== 0;
             return (
               <div
@@ -41,14 +46,16 @@ const Newslist = ({ artikels }: any) => {
                   )}
                 </div>
                 <div className={`grid grid-cols-2 gap-4 h-full`}>
-                  {group.slice(1).map((artikel: any, artikelIndex: number) => (
-                    <Cardnews
-                      key={groupIndex * 5 + artikelIndex + 1}
-                      variant="max-w-sm h-52"
-                      artikel={artikel}
-                      onSave={handleSaveNews}
-                    />
-                  ))}
+                  {group
+                    .slice(1)
+                    .map((artikel: Artikel, artikelIndex: number) => (
+                      <Cardnews
+                        key={groupIndex * 5 + artikelIndex + 1}
+                        variant="max-w-sm h-52"
+                        artikel={artikel}
+                        onSave={handleSaveNews}
+                      />
+                    ))}
                 </div>
               </div>
             );

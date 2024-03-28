@@ -1,24 +1,27 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useRef } from "react";
+import { SyntheticEvent, useRef } from "react";
+import { FcSearch } from "react-icons/fc";
 
-const Navbar = ({ children }: any) => {
-  const searchRef: any = useRef<HTMLInputElement>(null);
+const Navbar = ({ children }: { children: React.ReactNode }) => {
+  const searchRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
-  const handleSeacrh = (event: any) => {
+  const handleSeacrh = (event: SyntheticEvent) => {
     event.preventDefault();
-    const keyword = searchRef.current.value;
+    const keyword = searchRef.current?.value || "";
     router.push(`/search/${keyword}`);
-    searchRef.current.value = "";
+    if (searchRef.current) {
+      searchRef.current.value = "";
+    }
   };
 
   return (
     <>
-      <nav className="bg-gray-800 py-4 px-10 flex justify-between items-center">
-        <div className="text-white font-bold">Logo</div>
+      <nav className="bg-black py-4 px-10 flex justify-between items-center">
+        <div className="text-white font-bold">DNA News</div>
         <div className="flex items-center">
-          <Link href="/" className="mr-4 text-white">
+          <Link href="/" className="mr-5 text-white">
             Home
           </Link>
           <Link href="/news" className="text-white">
@@ -29,14 +32,14 @@ const Navbar = ({ children }: any) => {
           <input
             type="text"
             placeholder="Search..."
-            className="px-4 py-2 mr-2 rounded-l-md focus:outline-none"
+            className="px-4 py-2 mr-2 rounded-md focus:outline-none"
             ref={searchRef}
           />
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-r-md"
+            className="bg-white text-xl py-2.5 px-4 rounded-md"
             onClick={handleSeacrh}
           >
-            Search
+            <FcSearch />
           </button>
         </div>
       </nav>
