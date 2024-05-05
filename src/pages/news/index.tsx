@@ -50,7 +50,7 @@ const News = () => {
         </>
       ) : (
         <div className="flex min-h-screen w-full justify-center items-center">
-          <h1 className="text-2xl">Tidak Berita Yang Anda Simpan</h1>
+          <h1 className="text-2xl">Tidak Ada Berita Yang Anda Simpan</h1>
         </div>
       )}
     </>
